@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- name="viewport" => 告訴瀏覽器「我要設定 viewport 的行為」-->
+        <!-- width=device-width：讓網頁寬度跟裝置螢幕一樣寬 -->
+        <!-- initial-scale=1.0：初始縮放比例為 1（不縮放） -->
+        <title>Music Player</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/db84913ef0.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="music-player">
+                <nav>
+                    <div class="circle">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </div>
+                    <div class="circle">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                </nav>
+                <img src="media/ALin.jpg" class="song-img">
+                <h1>大大的擁抱</h1>
+                <p>A-Lin</p>
+
+                <audio id="song"> <!-- controls  -->
+                    <source src="media/大大的擁抱.mp3" type="audio/mpeg">
+                    <!-- type="audio/mpeg" 支援mp3格式 -->
+                </audio>
+                <input type="range" value="0" id="progress">
+
+                <div class="controls">
+                    <div><i class="fa-solid fa-backward"></i></div>
+                    <div id="pp_button"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                    <!-- onclick="playPause()" 把這行移到js pp_button.addEventListener("click"裡 -->
+                    <div><i class="fa-solid fa-forward"></i></div>
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+            let progress = document.querySelector('#progress');
+            let song = document.querySelector('#song');
+            let ctrlIcon = document.querySelector('#ctrlIcon');
+            const pp_button = document.querySelector("#pp_button")
+
+            let progressTimer = null;
+
+            song.onloadedmetadata = function(){
+                /*這是針對<audio>或<video>元素的事件 
+                  當媒體中的中繼資料(metadata)載入完成後會執行這個function*/
+                progress.max = song.duration; /*時長(duration)*/
+                progress.value = song.currentTime; /*把目前播放進度設定為音樂的現在播放時間（秒數）*/
+            }
+
+            function playPause(){
+                if(ctrlIcon.classList.contains("fa-pause")){
+                    //song.pause();
+                    ctrlIcon.classList.remove("fa-pause");
+                    ctrlIcon.classList.add("fa-play");
+                }
+                else {
+                    //song.play();
+                    ctrlIcon.classList.add("fa-pause");
+                    ctrlIcon.classList.remove("fa-play");
+                }
+            }
+            
+            /*
+            //play 會回傳 Promise (舊版本瀏覽器不會回傳值) 所以不能用這個
+            if(song.play()){
+                setInterval(()=>{
+                    progress.value = song.currentTime;
+                },500);
+                //使用setInterval()每隔一段時間重複執行裡面的程式碼(500毫秒=0.5秒)
+            } else {
+                console.log("playing");
+            }*/
+            console.log(song.paused);
+            pp_button.addEventListener("click", () => {
+                console.log(song.paused);
+                playPause();
+                if (song.paused) {
+                    song.play()
+                        .then(() => {
+                            console.log(song.currentTime);
+                            // 僅此一次，更新進度條
+                            if(!progressTimer){
+                                progressTimer = setInterval(() => {
+                                    progress.value = song.currentTime;
+                                }, 500);                                
+                            }
+
+                    })
+                        .catch(err => {
+                            console.error("播放失敗：", err);
+                            if (err.name === "AbortError") {
+                                alert("音樂檔可能有問題或正在中斷播放");
+                            }
+                        });
+                } else {
+                    song.pause();
+                    clearInterval(progressTimer);
+                    progressTimer = null;
+                    console.log("已暫停");
+                }
+            });
+
+            progress.onchange = function(){
+                console.log("change");
+                song.play();
+                song.currentTime = progress.value;
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+            }
+            /*
+            song.addEventListener("ended", () => {
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+                progress.value = 0.0001;
+            })*/
+
+        </script>
+
+    </body>
+</html>

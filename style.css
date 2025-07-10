@@ -1,0 +1,115 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', '標楷體', sans-serif;
+    /* Poppins 主要字體/備用字體 */
+    box-sizing: border-box;
+    /* width 包含了 padding 和 border */
+    /*不會超出你設定的寬度*/
+    /*確保子元素寬度不會超過父元素，如果子元素有padding或border，不加這行可能會超出父元素寬度*/
+}
+
+.container{
+    width: 100%; /*根據父元素的內容寬度*/ /*通常會在父元素搭配box-sizing: border-box; */
+    height: 100vh; /*視窗高度的100%*/
+    background: #333;
+    display: flex; /*把這個元素變成「彈性容器（Flex Container）」
+                     它的子元素就變成「彈性項目（Flex Items）」*/
+    align-items: center; /*垂直方向置中（在容器高度內置中）*/
+    justify-content: center; /*水平方向置中（在容器寬度內置中）*/
+    flex-wrap: wrap; /*如果子元素太多擠不下，就會自動換行，而不是全部擠在一行*/
+}
+
+.music-player{
+    background: #ffe0e5;
+    width: 400px;
+    padding: 25px 35px;
+    text-align: center;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;/*將子元素 平均分散在整個容器內，
+                                     左右兩側貼邊，中間平均留空隙。*/
+    margin-bottom: 30px;
+}
+
+nav .circle{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #fff;
+    color: #f53192;
+    box-shadow: 0 5px 10px rgba(255, 26, 26, 0.22); /*水平位移 垂直位移 模糊程度 顏色*/
+}
+
+.song-img{
+    width: 220px;
+    /*height: 220px;*/
+    border-radius: 50%;
+    border: 8px solid #fff;
+    box-shadow: 0 10px 60px rgba(255, 26, 26, 0.22);
+}
+
+.music-player h1{
+    font-size: 20px;
+    font-weight: 400;/*字體粗細 400=normal*/
+    color: #333;
+    margin-top: 20px;
+}
+
+.music-player p{
+    font-size: 14px;
+    color: #333;
+}
+
+#progress {
+    appearance: none; /*標準寫法，推薦*/
+    -webkit-appearance: none; /*移除預設的樣式*/ /*Chrome、Safari 專用*/
+    width: 100%;
+    height: 6px;
+    background: #f53192;
+    border-radius: 4px;
+    cursor: pointer; /*當滑鼠移到某個元素上時，游標會變成「手指圖示 ☝️」，也就是「可以點擊」的感覺。*/
+    margin: 40px 0;
+}
+
+#progress::-webkit-slider-thumb {
+    /*::-webkit-slider-thumb是這個滑桿的「拇指」（就是你拖拉的小圓點）的WebKit 專屬樣式偽元素*/
+    -webkit-appearance: none;
+    background: #f53192;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    /*若 border-radius 數值大到超過一半寬/高，就會直接變成圓形（前提是寬高相等）。*/
+    border: 8px solid #fff;
+    box-shadow: 0 5px 5px rgba(255, 26, 26, 0.22);
+}
+
+.controls {
+    display: flex;
+    justify-content: center; /* 水平方向置中（在容器寬度內置中）*/
+    align-items: center; /*垂直方向置中（在容器高度內置中）*/
+}
+
+.controls div {
+    width: 60px;
+    height: 60px;
+    margin: 20px;
+    background: #fff;
+    display: inline-flex; /* inline:元素為內聯元素 不會換行 flex:子元素會變成彈性排版*/
+    align-items: center; /* 垂直方向置中（在容器高度內置中）*/
+    justify-content: center; /* 水平方向置中（在容器寬度內置中）*/
+    border-radius: 50%;
+    color: #f53192;
+    box-shadow: 0 10px 20px rgba(255, 26, 26, 0.22);
+    cursor: pointer;
+}
+
+.controls div:nth-child(2) {
+    /*選第2個子元素*/
+    transform: scale(1.5); /*元素縮放*/
+    background: #f53192;
+    color: #fff;
+}
